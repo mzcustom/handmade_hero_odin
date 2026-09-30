@@ -20,8 +20,7 @@ main :: proc() {
 	event_mask := x11.EventMask{.StructureNotify, .Exposure, .KeyPress, .FocusChange}
 	x11.SelectInput(display, window, event_mask)
 	x11.MapWindow(display, window)
-
-	fmt.println("Window created. Close it or press a key to quit.")
+	defer x11.DestroyWindow(display, window)
 
 	running := true
 	for running {
@@ -57,6 +56,4 @@ main :: proc() {
 			fmt.printf("Event %v came in!\n", event.type)
 		}
 	}
-
-	x11.DestroyWindow(display, window)
 }
